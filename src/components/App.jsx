@@ -72,7 +72,7 @@ export class App extends Component {
 
   render() {
     return (
-      <>
+      <div>
         {this.state.isLoading ? (
           <Loader />
         ) : (
@@ -94,7 +94,7 @@ export class App extends Component {
             handleClose={this.handleModalClose}
           />
         ) : null}
-      </>
+      </div>
     );
   }
 }
