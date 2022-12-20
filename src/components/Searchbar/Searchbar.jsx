@@ -9,6 +9,7 @@ export const Searchbar = ({ onSubmit }) => {
           <span className={css.searchBtnLabel}>Search</span>
         </button>
         <input
+          name="inputForSearch"
           className={css.searchInput}
           type="text"
           autocomplete="off"
