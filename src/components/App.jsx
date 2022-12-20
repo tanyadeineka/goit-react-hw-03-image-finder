@@ -26,7 +26,7 @@ export class App extends Component {
     }
     const response = await fetchImages(inputForSearch.value, 1);
     this.setState({
-      image: response,
+      images: response,
       isLoading: false,
       currentSearch: inputForSearch.value,
       pageNumber: 1,
