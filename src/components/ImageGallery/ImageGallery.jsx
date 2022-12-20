@@ -5,12 +5,12 @@ import css from './ImageGallery.module.css';
 export const ImageGallery = ({ images, onImageClick }) => (
     <ul className={css.ImageGallery}>
       {images.map((image, index) => (
-        <ImageGalleryItem onClick={onImageClick} image={image} key={index} />
+        <ImageGalleryItem onclick={onImageClick} image={image} key={index} />
       ))}
     </ul>
 );
 
-ImageGalleryItem.propTypes = {
+ImageGallery.propTypes = {
   images: propTypes.arrayOf(
     propTypes.shape({
       id: propTypes.number.isRequired,
