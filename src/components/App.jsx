@@ -72,7 +72,14 @@ export class App extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr',
+          gridGap: '16px',
+          paddingBottom: '24px',
+        }}
+      >
         {this.state.isLoading ? (
           <Loader />
         ) : (
