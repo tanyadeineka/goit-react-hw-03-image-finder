@@ -8,67 +8,56 @@ import { Modal } from './Modal/Modal';
 
 export class App extends Component {
   state = {
-    images: [],
-    isLoading: false,
     currentSearch: '',
     pageNumber: 1,
+    images: [],
+    totalHits: null,
+    isLoading: false,
     modalOpen: false,
     modalImg: '',
     modalAlt: '',
   };
 
-  handleSubmit = async event => {
-    event.preventDefault();
-    this.setState({ isLoading: true });
-    const inputForSearch = event.target.elements.inputForSearch;
-    if (inputForSearch.value.trim() === '') {
-      return;
+  async componentDidUpdate(prevProps, prevState) {
+    try {
+      if (this.state.currentSearch !== prevState.currentSearch || this.state.pageNumber !== prevState.pageNumber) {
+        this.setState({ isLoading: true });
+        const response = await fetchImages(this.state.currentSearch, this.state.pageNumber);
+        
+        this.setState({
+          images: response,
+          isLoading: false,
+          currentSearch: this.currentSearch,
+          pageNumber: this.pageNumber,
+        });
+      }
+    } catch (error) {
+      this.setState({ isLoading: false });
     }
-    const response = await fetchImages(inputForSearch.value, 1);
+  }
+
+  handleSubmit = event => {
+    const inputForSearch = event.target.elements.inputForSearch;
     this.setState({
-      images: response,
-      isLoading: false,
+      images: [],
       currentSearch: inputForSearch.value,
       pageNumber: 1,
     });
   };
 
-  handleImageClick = event => {
+  handleClickMore = () => {
     this.setState({
-      modalOpen: true,
-      modalAlt: event.target.alt,
-      modalImg: event.target.name,
+      pageNumber: this.state.pageNumber + 1,
     });
   };
 
-  handleClickMore = async () => {
-    const response = await fetchImages(
-      this.state.currentSearch,
-      this.state.pageNumber + 1
-    );
-    this.setState({
-      images: [...this.state.images, ...response],
-      pageNr: this.state.pageNumber + 1,
-    });
-  };
-
-  handleModalClose = () => {
-    this.setState({
-      modalOpen: false,
+  handleModalToggle = () => {
+    this.setState(prevState =>({
+      modalOpen: !prevState.modalOpen,
       modalImg: '',
       modalAlt: '',
-    });
+    }));
   };
-
-  handleKeyDown = event => {
-    if (event.code === 'Escape') {
-      this.handleModalClose();
-    }
-  };
-
-  async componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
 
   render() {
     return (
@@ -87,20 +76,20 @@ export class App extends Component {
             <Searchbar onSubmit={this.handleSubmit} />
             <ImageGallery
               images={this.state.images}
-              onImageClick={this.handleImageClick}
+              onImageClick={this.handleModalToggle}
             />
             {this.state.images.length > 0 ? (
               <Button onClick={this.handleClickMore} />
             ) : null}
           </React.Fragment>
         )}
-        {this.state.modalOpen ? (
+        {this.state.modalOpen && (
           <Modal
             src={this.state.modalImg}
             alt={this.state.modalAlt}
-            handleClose={this.handleModalClose}
+            onCloseModal={this.handleModalToggle}
           />
-        ) : null}
+        )}
       </div>
     );
   }
