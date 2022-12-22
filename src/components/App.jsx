@@ -55,11 +55,11 @@ export class App extends Component {
     }));
   };
 
-  handleModalToggle = () => {
+  handleModalToggle = (modalImg, modalAlt) => {
     this.setState(prevState => ({
       modalOpen: !prevState.modalOpen,
-      modalImg: '',
-      modalAlt: '',
+      modalImg,
+      modalAlt,
     }));
   };
 
