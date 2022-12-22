@@ -8,8 +8,8 @@ import { Modal } from './Modal/Modal';
 
 export class App extends Component {
   state = {
-    currentSearch: '',
-    pageNumber: 1,
+    query: '',
+    page: 1,
     images: [],
     totalHits: null,
     isLoading: false,
@@ -20,15 +20,19 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     try {
-      if (this.state.currentSearch !== prevState.currentSearch || this.state.pageNumber !== prevState.pageNumber) {
+      if (
+        this.state.query !== prevState.query ||
+        this.state.page !== prevState.page
+      ) {
         this.setState({ isLoading: true });
-        const response = await fetchImages(this.state.currentSearch, this.state.pageNumber);
-        
+
+        const data = await fetchImages(this.state.query, this.state.page);
+        const { hits, totalHits } = data;
+
         this.setState({
-          images: response,
+          images: [...this.state.images, ...hits],
+          totalHits,
           isLoading: false,
-          currentSearch: this.currentSearch,
-          pageNumber: this.pageNumber,
         });
       }
     } catch (error) {
@@ -40,19 +44,19 @@ export class App extends Component {
     const inputForSearch = event.target.elements.inputForSearch;
     this.setState({
       images: [],
-      currentSearch: inputForSearch.value,
-      pageNumber: 1,
+      query: inputForSearch.value,
+      page: 1,
     });
   };
 
   handleClickMore = () => {
-    this.setState({
-      pageNumber: this.state.pageNumber + 1,
-    });
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
   };
 
   handleModalToggle = () => {
-    this.setState(prevState =>({
+    this.setState(prevState => ({
       modalOpen: !prevState.modalOpen,
       modalImg: '',
       modalAlt: '',
@@ -87,7 +91,7 @@ export class App extends Component {
           <Modal
             src={this.state.modalImg}
             alt={this.state.modalAlt}
-            onCloseModal={this.handleModalToggle}
+            closeModal={this.handleModalToggle}
           />
         )}
       </div>
