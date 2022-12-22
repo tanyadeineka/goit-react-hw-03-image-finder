@@ -40,8 +40,7 @@ export class App extends Component {
     }
   }
 
-  handleSubmit = object => {
-    const { query, page, images } = object;
+  handleSubmit = ({ query, page, images }) => {
     this.setState({
       images,
       query,
@@ -82,9 +81,9 @@ export class App extends Component {
               images={this.state.images}
               onImageClick={this.handleModalToggle}
             />
-            {this.state.images.length > 0 ? (
-              <Button onClick={this.handleClickMore} />
-            ) : null}
+            {this.state.totalHits / 12 >= this.state.page &&
+              !this.state.isLoading && <Button onClick={this.handleClickMore} />}
+            {this.state.isLoading && <Loader />}
           </React.Fragment>
         )}
         {this.state.modalOpen && (
