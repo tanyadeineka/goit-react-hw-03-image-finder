@@ -40,12 +40,12 @@ export class App extends Component {
     }
   }
 
-  handleSubmit = event => {
-    const inputForSearch = event.target.elements.inputForSearch;
+  handleSubmit = object => {
+    const { query, page, images } = object;
     this.setState({
-      images: [],
-      query: inputForSearch.value,
-      page: 1,
+      images,
+      query,
+      page,
     });
   };
 
