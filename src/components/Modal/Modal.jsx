@@ -24,18 +24,18 @@ export class Modal extends Component {
   };
 
   render() {
-    const { src, alt } = this.props;
+    
     return (
       <div className={css.Overlay} onClick={this.handleClickOverlay}>
         <div className={css.Modal}>
-          <img src={src} alt={alt} />
+          <img src={this.props.src} alt={this.props.alt} />
         </div>
       </div>
     );
   }
 } 
 Modal.propTypes = {
-  src: propTypes.string.isRequired,
-  alt: propTypes.string.isRequired,
+  // src: propTypes.string.isRequired,
+  // alt: propTypes.string.isRequired,
   closeModal: propTypes.func.isRequired,
 };
