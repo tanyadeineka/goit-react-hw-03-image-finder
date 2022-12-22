@@ -82,14 +82,16 @@ export class App extends Component {
               onImageClick={this.handleModalToggle}
             />
             {this.state.totalHits / 12 >= this.state.page &&
-              !this.state.isLoading && <Button onClick={this.handleClickMore} />}
+              !this.state.isLoading && (
+                <Button onClick={this.handleClickMore} />
+              )}
             {this.state.isLoading && <Loader />}
           </React.Fragment>
         )}
         {this.state.modalOpen && (
           <Modal
-            src={this.state.modalImg}
-            alt={this.state.modalAlt}
+            modalImg={this.state.modalImg}
+            modalAlt={this.state.modalAlt}
             closeModal={this.handleModalToggle}
           />
         )}
