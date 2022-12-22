@@ -13,13 +13,13 @@ export class Modal extends Component {
 
   handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onCloseModal();
+      this.props.closeModal();
     }
   };
 
   handleClickOverlay = e => {
     if (e.currentTarget === e.target) {
-      this.props.onCloseModal();
+      this.props.closeModal();
     }
   };
 
@@ -34,9 +34,8 @@ export class Modal extends Component {
     );
   }
 } 
-
 Modal.propTypes = {
   src: propTypes.string.isRequired,
   alt: propTypes.string.isRequired,
-  handleClose: propTypes.func.isRequired,
+  closeModal: propTypes.func.isRequired,
 };
