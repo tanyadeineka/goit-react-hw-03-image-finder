@@ -13,7 +13,7 @@ export class App extends Component {
     images: [],
     totalHits: null,
     isLoading: false,
-    modalOpen: false,
+    showModal: false,
     modalImg: '',
     modalAlt: '',
   };
@@ -40,7 +40,7 @@ export class App extends Component {
     }
   }
 
-  handleSubmit = ({ query, page, images }) => {
+  handleFormSubmit = ({ query, page, images }) => {
     this.setState({
       images,
       query,
@@ -48,15 +48,15 @@ export class App extends Component {
     });
   };
 
-  handleClickMore = () => {
+  loadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
     }));
   };
 
-  handleModalToggle = (modalImg, modalAlt) => {
+  toggleModal = (modalImg, modalAlt) => {
     this.setState(prevState => ({
-      modalOpen: !prevState.modalOpen,
+      showModal: !prevState.showModal,
       modalImg,
       modalAlt,
     }));
@@ -76,23 +76,23 @@ export class App extends Component {
           <Loader />
         ) : (
           <React.Fragment>
-            <Searchbar onSubmit={this.handleSubmit} />
+            <Searchbar onSubmit={this.handleFormSubmit} />
             <ImageGallery
               images={this.state.images}
-              onImageClick={this.handleModalToggle}
+              openModal={this.toggleModal}
             />
             {this.state.totalHits / 12 >= this.state.page &&
               !this.state.isLoading && (
-                <Button onClick={this.handleClickMore} />
+                <Button onClick={this.loadMore} />
               )}
             {this.state.isLoading && <Loader />}
           </React.Fragment>
         )}
-        {this.state.modalOpen && (
+        {this.state.showModal && (
           <Modal
             modalImg={this.state.modalImg}
             modalAlt={this.state.modalAlt}
-            closeModal={this.handleModalToggle}
+            closeModal={this.toggleModal}
           />
         )}
       </div>
